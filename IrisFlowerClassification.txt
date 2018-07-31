@@ -1,0 +1,39 @@
+cd /Users/valli/Desktop;
+
+load irisTrainingData.csv;
+
+X=irisTrainingData;
+
+Y=X(:,5);
+
+X(:,[5])=[];
+
+X = [ones(size(X,1),1) X];
+
+thetas=[12 4 12 6 7];
+
+function predictions = sigmoid(thetas,X)
+  prePrediction=X*thetas';
+  predictions=1 ./ (1 + e.^-prePrediction); 
+endfunction
+
+function gradient = cost(hyp,Y,X,learningRate)
+  gradient = learningRate * (X' * (hyp-Y));
+endfunction
+
+function optimizedThetas = gradientDescent(X,Y,thetas)
+  prediction = sigmoid(thetas,X);
+  gradient = cost(prediction, Y, X, 3);
+  loops=0;
+  while loops<100
+    thetas = thetas’;
+    thetas = thetas - gradient;
+    thetas = thetas’;
+    prediction = sigmoid(thetas,X);
+    gradient = cost(prediction, Y,X,3);
+    loops = loops+1;
+  endwhile
+  optimizedThetas=thetas;
+endfunction
+
+finalThetas = gradientDescent(X,Y,thetas);
